@@ -1,0 +1,206 @@
+/* Reality Design System (RDS) v0.1.0 */
+
+/* ---------------------------------- */
+/* 1. Design Tokens (CSS Variables)   */
+/* ---------------------------------- */
+:root {
+    /* Colors */
+    --color-primary: #6339F5;
+    --color-accent: #00D0AB;
+    --color-dark: #1D2639;
+    --color-body-text: #4A5468;
+    --color-gray-300: #D1D5DB;
+    --color-gray-100: #F3F4F6;
+    --color-white: #FFFFFF;
+    --color-success: #10B981;
+    --color-error: #EF4444;
+
+    /* Typography */
+    --font-family: 'Lexend', sans-serif;
+    --font-size-base: 16px;
+    --font-size-h1: 3rem;   /* 48px */
+    --font-size-h2: 2.25rem; /* 36px */
+    --font-size-h3: 1.5rem;  /* 24px */
+    --font-size-sm: 0.875rem;/* 14px */
+    
+    /* Spacing (4px base) */
+    --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+    --space-6: 1.5rem;  --space-8: 2rem;   --space-10: 2.5rem; --space-12: 3rem;
+    
+    /* Borders & Shadows */
+    --border-radius-medium: 8px;
+    --border-radius-large: 12px;
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------------------------------- */
+/* 2. Base & Reset Styles             */
+/* ---------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    color: var(--color-body-text);
+    line-height: 1.6;
+    background-color: var(--color-white);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-family);
+    color: var(--color-dark);
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+a:hover {
+    opacity: 0.8;
+}
+
+/* ---------------------------------- */
+/* 3. Layout & Utilities              */
+/* ---------------------------------- */
+.container {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+}
+
+.text-center { text-align: center; }
+.text-body { color: var(--color-body-text); }
+.text-light-gray { color: var(--color-gray-300); }
+.bg-light-gray { background-color: var(--color-gray-100); }
+.bg-dark { background-color: var(--color-dark); }
+.d-flex { display: flex; }
+.justify-content-between { justify-content: space-between; }
+.justify-content-center { justify-content: center; }
+.align-items-center { align-items: center; }
+.grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
+
+/* Spacing Utilities */
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.ml-4 { margin-left: var(--space-4); }
+.py-8 { padding-top: var(--space-8); padding-bottom: var(--space-8); }
+.py-10 { padding-top: var(--space-10); padding-bottom: var(--space-10); }
+
+/* ---------------------------------- */
+/* 4. Components                      */
+/* ---------------------------------- */
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    padding: var(--space-3) var(--space-6);
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: var(--font-size-base);
+}
+.btn-lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: 1.125rem;
+}
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+.link-primary {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Card */
+.card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-large);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: var(--space-4);
+}
+.inline-form {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+}
+.form-control {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-base);
+    min-width: 300px;
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99, 57, 245, 0.2);
+}
+
+/* Header */
+.main-header {
+    padding: var(--space-6) 0;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-300);
+}
+.logo {
+    height: 36px;
+}
+.main-nav a {
+    color: var(--color-body-text);
+    margin: 0 var(--space-4);
+    font-weight: 500;
+}
+.main-nav a:hover {
+    color: var(--color-primary);
+    opacity: 1;
+}
+
+/* Footer */
+.main-footer {
+    color: var(--color-gray-300);
+}
