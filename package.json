@@ -1,0 +1,12 @@
+{
+  "name": "gong-design-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A foundational design system for Gong.io landing pages.",
+  "scripts": {
+    "start": "live-server"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
