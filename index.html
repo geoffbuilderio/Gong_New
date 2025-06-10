@@ -1,83 +1,651 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gong.io - Reality Design System Example</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/reality.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Gong - Revenue AI Platform | Drive Revenue with AI-Powered Agents
+    </title>
+    <meta
+      name="description"
+      content="Drive revenue outcomes with Gong's AI-powered platform. Get deal intelligence, people insights, and market analytics to accelerate your sales performance."
+    />
 
-</head>
-<body>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/reality.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/gong-logo.svg" />
+  </head>
+  <body>
+    <!-- Announcement Banner -->
+    <div class="announcement-banner">
+      <div class="container">
+        🚀 <strong>New:</strong> Gong + Microsoft partnership delivers AI agents
+        that work.
+        <a href="#" aria-label="Learn more about Gong Microsoft partnership"
+          >Learn more →</a
+        >
+      </div>
+    </div>
+
+    <!-- Header -->
     <header class="main-header">
-        <div class="container d-flex justify-content-between align-items-center">
-            <img src="assets/gong-logo.svg" alt="Gong.io Logo" class="logo">
-            <nav class="main-nav">
-                <a href="#">Product</a>
-                <a href="#">Solutions</a>
-                <a href="#">Pricing</a>
-            </nav>
-            <button class="btn btn-primary">Request a Demo</button>
+      <div class="container">
+        <div class="header-content">
+          <img src="assets/gong-logo.svg" alt="Gong" class="logo" />
+
+          <nav class="main-nav" role="navigation" aria-label="Main navigation">
+            <a href="#platform">Platform</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#resources">Resources</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#company">Company</a>
+          </nav>
+
+          <div class="header-actions">
+            <a href="#" class="btn btn-outline">Log In</a>
+            <a href="#demo" class="btn btn-primary">Request Demo</a>
+          </div>
         </div>
+      </div>
     </header>
 
     <main>
-        <section class="hero text-center py-10">
-            <div class="container">
-                <h1 class="mb-4">Unlock Reality. Drive Revenue.</h1>
-                <p class="h3 text-body mb-8">The Gong Reality Platform™ captures and understands every customer interaction, then delivers insights at scale, empowering revenue teams to make decisions based on data instead of opinions.</p>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-primary btn-lg">Get a Demo</button>
-                    <button class="btn btn-secondary btn-lg ml-4">Watch a Tour</button>
-                </div>
+      <!-- Hero Section -->
+      <section class="hero py-20" aria-labelledby="hero-heading">
+        <div class="container text-center">
+          <div class="hero-content">
+            <h1 id="hero-heading" class="display-xl mb-6">
+              Revenue AI Platform<br />
+              <span
+                style="
+                  background: linear-gradient(135deg, #8039df, #4cfec8);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  background-clip: text;
+                "
+                >Agents that WORK</span
+              >
+            </h1>
+            <p class="lead mb-8">
+              Drive revenue outcomes with purpose-built AI agents working behind
+              the scenes while you sell. Get deal intelligence, forecast
+              accuracy, and market insights that accelerate your performance.
+            </p>
+            <div
+              class="d-flex justify-content-center flex-wrap btn-group"
+              style="gap: var(--space-4)"
+            >
+              <a href="#demo" class="btn btn-accent btn-xl">Meet the Agents</a>
+              <a href="#tour" class="btn btn-secondary btn-xl"
+                >Take Platform Tour</a
+              >
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <section class="features bg-light-gray py-10">
-            <div class="container">
-                <h2 class="text-center mb-8">Everything you need to win your market</h2>
-                <div class="grid-3-col">
-                    <div class="card">
-                        <h3 class="mb-2">Deal Intelligence</h3>
-                        <p class="text-body mb-4">Get a clear view of your pipeline, identify deal risks, and improve your forecasting accuracy.</p>
-                        <a href="#" class="link-primary">Learn more &rarr;</a>
-                    </div>
-                    <div class="card">
-                        <h3 class="mb-2">People Intelligence</h3>
-                        <p class="text-body mb-4">Coach your team to success with insights from your top performers' calls and meetings.</p>
-                        <a href="#" class="link-primary">Learn more &rarr;</a>
-                    </div>
-                    <div class="card">
-                        <h3 class="mb-2">Market Intelligence</h3>
-                        <p class="text-body mb-4">Understand what your customers are saying and how your market is evolving, in real-time.</p>
-                        <a href="#" class="link-primary">Learn more &rarr;</a>
-                    </div>
-                </div>
+      <!-- Trusted By Section -->
+      <section class="py-16 bg-gray" aria-labelledby="customers-heading">
+        <div class="container text-center">
+          <h2 id="customers-heading" class="h3 text-muted mb-8">
+            Trusted by 4,500+ customers worldwide
+          </h2>
+          <div class="grid grid-cols-4 gap-8 align-items-center">
+            <div
+              class="customer-logo"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+              "
+            >
+              <div
+                style="
+                  height: 40px;
+                  background: var(--color-gray-300);
+                  border-radius: var(--border-radius-sm);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--color-gray-600);
+                  font-weight: 600;
+                "
+              >
+                LinkedIn
+              </div>
             </div>
-        </section>
+            <div
+              class="customer-logo"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+              "
+            >
+              <div
+                style="
+                  height: 40px;
+                  background: var(--color-gray-300);
+                  border-radius: var(--border-radius-sm);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--color-gray-600);
+                  font-weight: 600;
+                "
+              >
+                Shopify
+              </div>
+            </div>
+            <div
+              class="customer-logo"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+              "
+            >
+              <div
+                style="
+                  height: 40px;
+                  background: var(--color-gray-300);
+                  border-radius: var(--border-radius-sm);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--color-gray-600);
+                  font-weight: 600;
+                "
+              >
+                Snowflake
+              </div>
+            </div>
+            <div
+              class="customer-logo"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+              "
+            >
+              <div
+                style="
+                  height: 40px;
+                  background: var(--color-gray-300);
+                  border-radius: var(--border-radius-sm);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--color-gray-600);
+                  font-weight: 600;
+                "
+              >
+                Slack
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <section class="cta py-10">
-            <div class="container text-center">
-                <h2>Ready to see Gong in action?</h2>
-                <p class="text-body mb-6">Let us show you how the Reality Platform can transform your revenue team.</p>
-                 <div class="form-group inline-form">
-                    <input type="email" class="form-control" placeholder="Enter your business email">
-                    <button class="btn btn-primary">Request a Demo</button>
-                </div>
+      <!-- Platform Overview -->
+      <section id="platform" class="py-20" aria-labelledby="platform-heading">
+        <div class="container text-center">
+          <h2 id="platform-heading" class="display-lg mb-6">
+            Centralize all your revenue workflows<br />in a unified platform
+          </h2>
+          <p class="lead mb-12 text-muted">
+            Everything you need to win your market, powered by AI agents that
+            understand your business.
+          </p>
+
+          <div class="features-grid">
+            <div class="card card-feature">
+              <div class="card-icon">🎯</div>
+              <h3 class="mb-4">Gong Engage</h3>
+              <p class="text-body mb-6">
+                Streamline your sales engagement with AI-powered sequences,
+                templates, and conversation intelligence.
+              </p>
+              <a href="#" class="link link-arrow">Explore Engage</a>
             </div>
-        </section>
+
+            <div class="card card-feature">
+              <div class="card-icon">📊</div>
+              <h3 class="mb-4">Gong Forecast</h3>
+              <p class="text-body mb-6">
+                Achieve 95% forecast accuracy with AI that analyzes every deal
+                signal and conversation insight.
+              </p>
+              <a href="#" class="link link-arrow">Explore Forecast</a>
+            </div>
+
+            <div class="card card-feature">
+              <div class="card-icon">🤖</div>
+              <h3 class="mb-4">Gong Agents</h3>
+              <p class="text-body mb-6">
+                Deploy AI agents that work 24/7 to qualify leads, update CRM,
+                and surface critical deal insights.
+              </p>
+              <a href="#" class="link link-arrow">Explore Agents</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Metrics Section -->
+      <section class="metrics py-20" aria-labelledby="results-heading">
+        <div class="container text-center">
+          <h2 id="results-heading" class="display-lg mb-12 text-white">
+            The results speak for themselves
+          </h2>
+
+          <div class="metrics-grid">
+            <div class="metric">
+              <span class="metric-number">95%</span>
+              <span class="metric-label">Forecast Accuracy</span>
+            </div>
+            <div class="metric">
+              <span class="metric-number">22%</span>
+              <span class="metric-label">Win Rate Increase</span>
+            </div>
+            <div class="metric">
+              <span class="metric-number">15%</span>
+              <span class="metric-label">Revenue Growth</span>
+            </div>
+            <div class="metric">
+              <span class="metric-number">4,500+</span>
+              <span class="metric-label">Customers Worldwide</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Success Stories -->
+      <section class="py-20 bg-gray" aria-labelledby="stories-heading">
+        <div class="container">
+          <h2 id="stories-heading" class="display-lg text-center mb-12">
+            Leading companies power their revenue with Gong
+          </h2>
+
+          <div class="grid grid-cols-2 gap-12">
+            <div class="card card-testimonial">
+              <div class="mb-6">
+                <div class="metric-number h2 mb-2">95%</div>
+                <h3 class="mb-4">forecast accuracy</h3>
+                <p class="mb-6">
+                  Deliver a strong quarter every quarter with AI that powers
+                  precise pipeline management and accurate forecasts.
+                </p>
+                <a href="#" class="link-accent link-arrow">Read the story</a>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="mb-6">
+                <h3 class="mb-4 text-primary">From manual to magical</h3>
+                <p class="text-body mb-6">
+                  "Gong's AI agents handle all the repetitive work so our team
+                  can focus on building relationships and closing deals. It's
+                  like having a personal assistant for every rep."
+                </p>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="mr-4"
+                    style="
+                      width: 48px;
+                      height: 48px;
+                      background: var(--color-primary);
+                      border-radius: 50%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      color: var(--color-white);
+                      font-weight: 700;
+                    "
+                  >
+                    JS
+                  </div>
+                  <div>
+                    <div class="font-weight-bold text-dark">John Smith</div>
+                    <div class="text-muted">VP of Sales, TechCorp</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Use Cases Section -->
+      <section class="py-20" aria-labelledby="roles-heading">
+        <div class="container">
+          <h2 id="roles-heading" class="display-lg text-center mb-12">
+            Every revenue pro wins with Gong
+          </h2>
+
+          <div class="grid grid-cols-3 gap-8">
+            <div class="text-center">
+              <h3 class="mb-4 text-primary">CRO</h3>
+              <p class="text-body mb-6">
+                Provide strategic guidance and forecast accurately with a
+                holistic view of your entire organization.
+              </p>
+              <ul style="list-style: none; text-align: left">
+                <li class="mb-2">✓ Real-time pipeline visibility</li>
+                <li class="mb-2">✓ Accurate revenue forecasting</li>
+                <li class="mb-2">✓ Performance analytics</li>
+              </ul>
+            </div>
+
+            <div class="text-center">
+              <h3 class="mb-4 text-primary">RevOps</h3>
+              <p class="text-body mb-6">
+                Build a best-in-class revenue team by driving measurable,
+                consistent performance.
+              </p>
+              <ul style="list-style: none; text-align: left">
+                <li class="mb-2">✓ Process optimization</li>
+                <li class="mb-2">✓ Data standardization</li>
+                <li class="mb-2">✓ Performance coaching</li>
+              </ul>
+            </div>
+
+            <div class="text-center">
+              <h3 class="mb-4 text-primary">Sales Manager</h3>
+              <p class="text-body mb-6">
+                Coach your team to success with insights from your top
+                performers' calls and meetings.
+              </p>
+              <ul style="list-style: none; text-align: left">
+                <li class="mb-2">✓ Call analysis & coaching</li>
+                <li class="mb-2">✓ Deal risk identification</li>
+                <li class="mb-2">✓ Team performance insights</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recognition Section -->
+      <section class="py-16 bg-gray" aria-labelledby="recognition-heading">
+        <div class="container text-center">
+          <h2 id="recognition-heading" class="display-lg mb-8">
+            The undisputed leader in revenue AI
+          </h2>
+          <div
+            class="d-flex justify-content-center flex-wrap"
+            style="gap: var(--space-8)"
+          >
+            <div
+              class="recognition-badge"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+                min-width: 120px;
+              "
+            >
+              <div style="font-weight: 700; color: var(--color-primary)">
+                Forrester
+              </div>
+              <div
+                style="
+                  font-size: var(--font-size-sm);
+                  color: var(--color-gray-600);
+                "
+              >
+                Leader 2024
+              </div>
+            </div>
+            <div
+              class="recognition-badge"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+                min-width: 120px;
+              "
+            >
+              <div style="font-weight: 700; color: var(--color-primary)">
+                Gartner
+              </div>
+              <div
+                style="
+                  font-size: var(--font-size-sm);
+                  color: var(--color-gray-600);
+                "
+              >
+                Magic Quadrant
+              </div>
+            </div>
+            <div
+              class="recognition-badge"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+                min-width: 120px;
+              "
+            >
+              <div style="font-weight: 700; color: var(--color-primary)">
+                G2
+              </div>
+              <div
+                style="
+                  font-size: var(--font-size-sm);
+                  color: var(--color-gray-600);
+                "
+              >
+                #1 Sales Analytics
+              </div>
+            </div>
+            <div
+              class="recognition-badge"
+              style="
+                padding: var(--space-4);
+                background: var(--color-white);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-sm);
+                min-width: 120px;
+              "
+            >
+              <div style="font-weight: 700; color: var(--color-primary)">
+                TrustRadius
+              </div>
+              <div
+                style="
+                  font-size: var(--font-size-sm);
+                  color: var(--color-gray-600);
+                "
+              >
+                Best Value
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final CTA Section -->
+      <section
+        id="demo"
+        class="cta-section py-20"
+        aria-labelledby="cta-heading"
+      >
+        <div class="container text-center">
+          <div class="cta-content">
+            <h2 id="cta-heading" class="display-lg mb-6">
+              Ready to see Gong in action?
+            </h2>
+            <p class="lead mb-8">
+              Join thousands of revenue teams who trust Gong to accelerate their
+              performance. Get a personalized demo today.
+            </p>
+
+            <form class="inline-form" style="max-width: 500px; margin: 0 auto">
+              <div class="form-group" style="flex: 1; margin-bottom: 0">
+                <label for="email" class="sr-only">Work Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Enter your work email"
+                  required
+                  aria-required="true"
+                />
+              </div>
+              <button type="submit" class="btn btn-accent btn-lg">
+                Request Live Demo
+              </button>
+            </form>
+
+            <p
+              class="mt-4"
+              style="
+                font-size: var(--font-size-sm);
+                color: var(--color-gray-200);
+              "
+            >
+              ✓ No spam, ever &nbsp;•&nbsp; ✓ 15-minute setup &nbsp;•&nbsp; ✓
+              Cancel anytime
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer class="main-footer bg-dark py-8">
-        <div class="container text-center">
-            <p class="text-light-gray">&copy; 2025 Gong.io, Inc. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="main-footer py-16">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <img
+              src="assets/gong-logo.svg"
+              alt="Gong"
+              class="logo mb-6"
+              style="filter: brightness(0) invert(1)"
+            />
+            <p class="mb-6">
+              The Revenue AI Platform that drives measurable business outcomes.
+            </p>
+            <a href="#demo" class="btn btn-accent mb-6">See It In Action</a>
+            <div class="d-flex" style="gap: var(--space-4)">
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                style="color: var(--color-gray-300)"
+                >LinkedIn</a
+              >
+              <a
+                href="#"
+                aria-label="Twitter"
+                style="color: var(--color-gray-300)"
+                >Twitter</a
+              >
+              <a
+                href="#"
+                aria-label="YouTube"
+                style="color: var(--color-gray-300)"
+                >YouTube</a
+              >
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Gong Engage</a></li>
+              <li><a href="#">Gong Forecast</a></li>
+              <li><a href="#">Gong Agents</a></li>
+              <li><a href="#">Platform Overview</a></li>
+              <li><a href="#">Integrations</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Solutions</h4>
+            <ul>
+              <li><a href="#">Sales Teams</a></li>
+              <li><a href="#">Customer Success</a></li>
+              <li><a href="#">Marketing Teams</a></li>
+              <li><a href="#">Revenue Operations</a></li>
+              <li><a href="#">Enterprise</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Resource Library</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Gong Labs</a></li>
+              <li><a href="#">Webinars</a></li>
+              <li><a href="#">Support</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">News</a></li>
+              <li><a href="#">Partners</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
         </div>
+
+        <div class="footer-bottom">
+          <div
+            class="d-flex justify-content-between align-items-center flex-wrap"
+            style="gap: var(--space-4)"
+          >
+            <p>&copy; 2025 Gong.io, Inc. All rights reserved.</p>
+            <div class="d-flex" style="gap: var(--space-6)">
+              <a href="#" style="color: var(--color-gray-300)"
+                >Privacy Policy</a
+              >
+              <a href="#" style="color: var(--color-gray-300)"
+                >Terms of Service</a
+              >
+              <a href="#" style="color: var(--color-gray-300)">Security</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
 
-</body>
+    <!-- Screen Reader Only Styles -->
+    <style>
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+  </body>
 </html>
