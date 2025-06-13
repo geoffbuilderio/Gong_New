@@ -408,11 +408,129 @@
 .product-display {
   text-align: center;
   padding: var(--space-8);
-  background: var(--builder-gradient-purple);
+  background: var(--builder-black);
+  border: 2px solid var(--builder-primary-purple);
   border-radius: var(--border-radius-large);
-  color: var(--builder-black);
+  color: var(--builder-white);
   margin-bottom: var(--space-6);
   font-family: var(--builder-font-family);
+}
+
+.product-name {
+  color: var(--builder-primary-purple);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.product-tagline {
+  color: var(--builder-white);
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin-bottom: var(--space-4);
+}
+
+.confidence-score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: rgba(172, 126, 244, 0.1);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--builder-primary-purple);
+}
+
+.confidence-label {
+  color: var(--builder-white);
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+}
+
+.confidence-value {
+  color: var(--builder-primary-purple);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+/* HubSpot Insights Styling */
+.hubspot-insights {
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  background: var(--builder-black);
+  border: 1px solid var(--builder-border-subtle);
+  border-radius: var(--border-radius-large);
+}
+
+.hubspot-insights h5 {
+  color: var(--builder-secondary-orange);
+  font-family: var(--builder-font-family);
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  font-size: 1.125rem;
+}
+
+.hubspot-insights h6 {
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.insight-item {
+  text-align: center;
+  padding: var(--space-3);
+  background: var(--builder-black);
+  border: 1px solid var(--builder-border-subtle);
+  border-radius: var(--border-radius-medium);
+}
+
+.insight-label {
+  display: block;
+  color: var(--builder-white);
+  font-size: var(--font-size-sm);
+  opacity: 0.7;
+  margin-bottom: var(--space-1);
+}
+
+.insight-value {
+  display: block;
+  color: var(--builder-secondary-orange);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.recent-interactions ul,
+.next-actions ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recent-interactions li,
+.next-actions li {
+  padding: var(--space-2);
+  margin-bottom: var(--space-2);
+  background: var(--builder-black);
+  border-left: 3px solid var(--builder-secondary-orange);
+  border-radius: var(--border-radius-medium);
+  color: var(--builder-white);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--builder-border-subtle);
+}
+
+@media (max-width: 768px) {
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .product-name {
@@ -430,8 +548,22 @@
   margin-top: var(--space-6);
 }
 
+.recommendation-reasons h4 {
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+}
+
 .recommendation-reasons ul {
   list-style: none;
+}
+
+.value-pyramid h3 {
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
+  font-weight: 600;
+  margin-bottom: var(--space-6);
 }
 
 .recommendation-reasons li {

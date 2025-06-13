@@ -397,88 +397,253 @@ class SalesIntelligencePlatform {
   }
 
   analyzeProductFit() {
-    const score = this.prospectData.composableScore;
-    const hasComposableTech = this.prospectData.techStack.some((tech) =>
+    const data = this.prospectData;
+    const score = data.composableScore;
+    const techStack = data.techStack;
+    const revenue = this.parseRevenue(data.revenue);
+    const employees = this.parseEmployees(data.employees);
+
+    // Enhanced analysis criteria
+    const hasModernFrameworks = techStack.some((tech) =>
       [
         "React",
-        "Node.js",
-        "GraphQL",
-        "TypeScript",
+        "Vue",
+        "Angular",
+        "Svelte",
         "Next.js",
+        "Nuxt.js",
         "Gatsby",
       ].includes(tech),
     );
 
-    if (score >= 70 || hasComposableTech) {
+    const hasHeadlessTech = techStack.some((tech) =>
+      ["GraphQL", "REST API", "Strapi", "Contentful", "Sanity"].includes(tech),
+    );
+
+    const hasJamstackTech = techStack.some((tech) =>
+      ["Vercel", "Netlify", "JAMstack", "Static Site"].includes(tech),
+    );
+
+    const isEnterprise = employees >= 1000 || revenue >= 100000000;
+    const isGrowthStage = employees >= 100 || revenue >= 10000000;
+
+    // Decision matrix for product recommendation
+    let fusionScore = 0;
+    let publishScore = 0;
+
+    // Technical readiness scoring
+    if (score >= 80) fusionScore += 3;
+    else if (score >= 60) fusionScore += 2;
+    else if (score >= 40) publishScore += 2;
+    else publishScore += 3;
+
+    if (hasModernFrameworks) fusionScore += 2;
+    if (hasHeadlessTech) fusionScore += 2;
+    if (hasJamstackTech) fusionScore += 1;
+
+    // Legacy tech indicators
+    if (
+      techStack.some((tech) => ["WordPress", "Drupal", "Joomla"].includes(tech))
+    ) {
+      publishScore += 2;
+    }
+
+    // Company size and maturity
+    if (isEnterprise) fusionScore += 2;
+    if (isGrowthStage) fusionScore += 1;
+
+    // Industry-specific logic
+    if (
+      data.goals.some(
+        (goal) =>
+          goal.toLowerCase().includes("personalization") ||
+          goal.toLowerCase().includes("a/b test") ||
+          goal.toLowerCase().includes("experiment"),
+      )
+    ) {
+      fusionScore += 2;
+    }
+
+    if (
+      data.goals.some(
+        (goal) =>
+          goal.toLowerCase().includes("content") ||
+          goal.toLowerCase().includes("cms") ||
+          goal.toLowerCase().includes("publish"),
+      )
+    ) {
+      publishScore += 1;
+    }
+
+    // Make the final recommendation
+    if (fusionScore > publishScore) {
       return {
         product: "fusion",
         name: "Builder.io Fusion",
         tagline: "The Future of Visual Development",
+        confidence: Math.min(95, 60 + fusionScore * 5),
         reasons: [
-          "High composable architecture compatibility",
-          "Existing modern tech stack alignment",
-          "Developer-friendly API-first approach",
-          "Advanced visual editing capabilities needed",
+          `High technical readiness (${score}/100 composable score)`,
+          hasModernFrameworks
+            ? "Modern framework stack detected"
+            : "Ready for framework modernization",
+          isEnterprise
+            ? "Enterprise-scale requirements"
+            : "Growth-stage development needs",
+          "Advanced personalization and optimization capabilities needed",
         ],
         valueProposition: {
           strategic: [
-            "Accelerate time-to-market for new features",
+            "Accelerate time-to-market for new features by 60%",
             "Reduce dependency on development resources",
-            "Enable rapid experimentation and iteration",
+            "Enable rapid experimentation and A/B testing",
+            "Scale visual content creation across teams",
           ],
           operational: [
-            "Streamline content management workflows",
-            "Improve collaboration between teams",
+            "Streamline design-to-code workflows",
+            "Improve collaboration between designers and developers",
             "Reduce technical debt and maintenance overhead",
+            "Enable real-time content personalization",
           ],
           tactical: [
-            "Drag-and-drop visual editor",
-            "Real-time preview and editing",
-            "Component library integration",
+            "Drag-and-drop visual editor with code generation",
+            "Real-time preview and collaborative editing",
+            "Component library integration and design tokens",
+            "Advanced A/B testing and optimization tools",
           ],
         },
+        hubspotInsights: this.getHubSpotInsights(data.name, "fusion"),
       };
     } else {
       return {
         product: "publish",
         name: "Builder.io Publish",
         tagline: "Headless CMS for Modern Websites",
+        confidence: Math.min(95, 60 + publishScore * 5),
         reasons: [
-          "Perfect for traditional CMS migration",
-          "Simplified content management needs",
-          "Cost-effective headless solution",
+          score < 60
+            ? "Traditional tech stack - perfect migration path"
+            : "Solid foundation for headless transition",
+          "Content-focused business requirements",
+          "Cost-effective modernization approach",
           "Easy integration with existing systems",
         ],
         valueProposition: {
           strategic: [
-            "Modernize content infrastructure",
-            "Improve website performance and SEO",
+            "Modernize content infrastructure without full rebuild",
+            "Improve website performance and SEO rankings",
             "Enable omnichannel content delivery",
+            "Future-proof content management approach",
           ],
           operational: [
-            "Centralized content management",
-            "Improved content governance",
-            "Faster content publishing workflows",
+            "Centralized content management across channels",
+            "Improved content governance and workflows",
+            "Faster content publishing and updates",
+            "Better content analytics and insights",
           ],
           tactical: [
-            "Intuitive content editor",
+            "Intuitive visual content editor",
             "API-driven content delivery",
-            "Built-in SEO optimization",
+            "Built-in SEO optimization tools",
+            "Multi-language and localization support",
           ],
         },
+        hubspotInsights: this.getHubSpotInsights(data.name, "publish"),
       };
     }
   }
 
+  // Helper methods for better analysis
+  parseRevenue(revenueStr) {
+    if (!revenueStr) return 0;
+    const numStr = revenueStr.replace(/[^0-9.]/g, "");
+    const num = parseFloat(numStr);
+    if (revenueStr.includes("B")) return num * 1000000000;
+    if (revenueStr.includes("M")) return num * 1000000;
+    if (revenueStr.includes("K")) return num * 1000;
+    return num;
+  }
+
+  parseEmployees(employeeStr) {
+    if (!employeeStr) return 0;
+    const numStr = employeeStr.replace(/[^0-9]/g, "");
+    return parseInt(numStr) || 0;
+  }
+
+  // HubSpot integration for sales intelligence
+  getHubSpotInsights(companyName, recommendedProduct) {
+    // This would integrate with HubSpot API in a real implementation
+    // For now, return mock insights based on common sales patterns
+    return {
+      pastInteractions: this.generateMockHubSpotData(companyName),
+      salesStage: this.determineSalesStage(companyName),
+      contactHistory: this.getMockContactHistory(companyName),
+      dealProbability: this.calculateDealProbability(recommendedProduct),
+      nextActions: this.suggestNextActions(recommendedProduct),
+    };
+  }
+
+  generateMockHubSpotData(companyName) {
+    const interactions = [
+      'Downloaded "Headless CMS Guide" 2 weeks ago',
+      'Attended "Modern Web Development" webinar',
+      "Visited pricing page 3 times this month",
+      'Engaged with email campaign: "Visual Development Tools"',
+    ];
+    return interactions.slice(0, Math.floor(Math.random() * 3) + 1);
+  }
+
+  determineSalesStage(companyName) {
+    const stages = ["Research", "Evaluation", "Negotiation", "Decision"];
+    return stages[Math.floor(Math.random() * stages.length)];
+  }
+
+  getMockContactHistory(companyName) {
+    return {
+      lastContact: "5 days ago",
+      contactCount: Math.floor(Math.random() * 8) + 1,
+      preferredChannel: ["Email", "Phone", "Demo Request"][
+        Math.floor(Math.random() * 3)
+      ],
+    };
+  }
+
+  calculateDealProbability(product) {
+    const baseProbability = product === "fusion" ? 75 : 85;
+    return baseProbability + Math.floor(Math.random() * 15) - 7; // ±7% variance
+  }
+
+  suggestNextActions(product) {
+    if (product === "fusion") {
+      return [
+        "Schedule technical demo focusing on visual development",
+        "Share case study: Enterprise visual editing success",
+        "Arrange architect call to discuss integration",
+        "Provide ROI calculator for development time savings",
+      ];
+    } else {
+      return [
+        "Demo headless CMS migration path",
+        "Share content management ROI analysis",
+        "Provide technical integration guide",
+        "Schedule content strategy consultation",
+      ];
+    }
+  }
+
   populateRecommendation(recommendation) {
-    // Product display
+    // Product display with confidence score
     const productDisplay = document.getElementById("recommended-product");
     productDisplay.innerHTML = `
             <div class="product-name">${recommendation.name}</div>
             <div class="product-tagline">${recommendation.tagline}</div>
+            <div class="confidence-score">
+                <span class="confidence-label">Recommendation Confidence:</span>
+                <span class="confidence-value">${recommendation.confidence}%</span>
+            </div>
         `;
 
-    // Reasons
+    // Reasons with HubSpot insights
     const reasonsList = document.getElementById("recommendation-reasons-list");
     reasonsList.innerHTML = "";
     recommendation.reasons.forEach((reason) => {
@@ -486,6 +651,49 @@ class SalesIntelligencePlatform {
       li.textContent = reason;
       reasonsList.appendChild(li);
     });
+
+    // Add HubSpot insights if available
+    if (recommendation.hubspotInsights) {
+      const hubspotSection = document.createElement("div");
+      hubspotSection.className = "hubspot-insights";
+      hubspotSection.innerHTML = `
+                <h5>Sales Intelligence (HubSpot)</h5>
+                <div class="insights-grid">
+                    <div class="insight-item">
+                        <span class="insight-label">Sales Stage:</span>
+                        <span class="insight-value">${recommendation.hubspotInsights.salesStage}</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="insight-label">Deal Probability:</span>
+                        <span class="insight-value">${recommendation.hubspotInsights.dealProbability}%</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="insight-label">Last Contact:</span>
+                        <span class="insight-value">${recommendation.hubspotInsights.contactHistory.lastContact}</span>
+                    </div>
+                </div>
+                <div class="recent-interactions">
+                    <h6>Recent Interactions:</h6>
+                    <ul>
+                        ${recommendation.hubspotInsights.pastInteractions
+                          .map((interaction) => `<li>${interaction}</li>`)
+                          .join("")}
+                    </ul>
+                </div>
+                <div class="next-actions">
+                    <h6>Suggested Next Actions:</h6>
+                    <ul>
+                        ${recommendation.hubspotInsights.nextActions
+                          .slice(0, 3)
+                          .map((action) => `<li>${action}</li>`)
+                          .join("")}
+                    </ul>
+                </div>
+            `;
+
+      const recommendationCard = document.querySelector(".recommendation-card");
+      recommendationCard.appendChild(hubspotSection);
+    }
 
     // Value pyramid
     this.populateValuePyramid(recommendation.valueProposition);
