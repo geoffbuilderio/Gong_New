@@ -2,27 +2,31 @@
 /* Sales Application Specific Styles  */
 /* ================================== */
 
-/* Builder.io Dark Mode Colors */
+/* Builder.io Official Colors */
 :root {
-  --builder-dark-bg: #1a1a1a;
-  --builder-dark-surface: #2a2a2a;
-  --builder-accent-blue: #00d4ff;
-  --builder-accent-purple: #8b5cf6;
-  --builder-text-light: #e5e5e5;
-  --builder-border-dark: #404040;
+  --builder-black: rgb(0, 0, 0);
+  --builder-white: rgb(255, 255, 255);
+  --builder-primary-purple: rgb(172, 126, 244);
+  --builder-secondary-orange: rgb(239, 108, 65);
+  --builder-secondary-blue: rgb(24, 182, 246);
+  --builder-border-subtle: rgb(58, 58, 58);
+  --builder-gradient-purple: linear-gradient(
+    135deg,
+    rgb(177, 134, 244),
+    rgb(229, 216, 251)
+  );
+  --builder-font-family: "Poppins", "Lexend", sans-serif;
 }
 
 /* Layout & Structure */
 .sales-header {
-  background: linear-gradient(
-    135deg,
-    var(--builder-dark-bg) 0%,
-    var(--builder-dark-surface) 100%
-  );
-  color: var(--color-white);
+  background: var(--builder-black);
+  color: var(--builder-white);
   padding: var(--space-4) 0;
-  box-shadow: var(--shadow-lg);
-  border-bottom: 1px solid var(--builder-border-dark);
+  border-bottom: 1px solid var(--builder-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .sales-header .logo {
@@ -53,12 +57,9 @@
 
 .sales-main {
   min-height: calc(100vh - 80px);
-  background: linear-gradient(
-    180deg,
-    var(--builder-dark-bg) 0%,
-    var(--builder-dark-surface) 100%
-  );
+  background: var(--builder-black);
   padding: var(--space-10) 0;
+  font-family: var(--builder-font-family);
 }
 
 /* Sales Sections */
@@ -89,24 +90,32 @@
 
 .section-header h1,
 .section-header h2 {
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   margin-bottom: var(--space-4);
+  font-family: var(--builder-font-family);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.section-header h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
 }
 
 .section-description {
   font-size: 1.125rem;
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   max-width: 600px;
   margin: 0 auto;
-  opacity: 0.8;
+  opacity: 0.9;
+  line-height: 1.6;
 }
 
 /* Input Card */
 .input-card {
-  background: var(--builder-dark-surface);
-  border-radius: var(--border-radius-large);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--builder-border-dark);
+  background: var(--builder-black);
+  border-radius: 16px;
+  border: 1px solid var(--builder-border-subtle);
   padding: var(--space-8);
   max-width: 600px;
   margin: 0 auto;
@@ -114,7 +123,7 @@
 
 .input-tabs {
   display: flex;
-  border-bottom: 2px solid var(--builder-border-dark);
+  border-bottom: 1px solid var(--builder-border-subtle);
   margin-bottom: var(--space-6);
 }
 
@@ -123,16 +132,17 @@
   border: none;
   padding: var(--space-4) var(--space-6);
   font-weight: 500;
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   cursor: pointer;
   transition: all 0.2s;
   border-bottom: 2px solid transparent;
   opacity: 0.7;
+  font-family: var(--builder-font-family);
 }
 
 .tab-btn.active {
-  color: var(--builder-accent-blue);
-  border-bottom-color: var(--builder-accent-blue);
+  color: var(--builder-primary-purple);
+  border-bottom-color: var(--builder-primary-purple);
   opacity: 1;
 }
 
@@ -151,26 +161,63 @@
 .form-group label {
   display: block;
   font-weight: 600;
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   margin-bottom: var(--space-2);
+  font-family: var(--builder-font-family);
 }
 
 .form-help {
   display: block;
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   font-size: var(--font-size-sm);
   margin-top: var(--space-2);
   opacity: 0.7;
+}
+
+.form-control {
+  background: var(--builder-black);
+  border: 1px solid var(--builder-border-subtle);
+  color: var(--builder-white);
+}
+
+.form-control:focus {
+  border-color: var(--builder-primary-purple);
+  box-shadow: 0 0 0 3px rgba(172, 126, 244, 0.2);
 }
 
 .form-actions {
   text-align: center;
 }
 
-/* Button Loading State */
+/* Button Styling */
 .btn {
   position: relative;
   overflow: hidden;
+  font-family: var(--builder-font-family);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--builder-primary-purple);
+  color: var(--builder-white);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: rgb(162, 89, 255);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--builder-primary-purple);
+  border: 1px solid var(--builder-primary-purple);
+}
+
+.btn-secondary:hover {
+  background: var(--builder-primary-purple);
+  color: var(--builder-white);
 }
 
 .btn.loading .btn-text {
@@ -199,27 +246,27 @@
 }
 
 .result-card {
-  background: var(--builder-dark-surface);
-  border-radius: var(--border-radius-large);
+  background: var(--builder-black);
+  border-radius: 16px;
   padding: var(--space-8);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
   transition:
     transform 0.2s,
-    box-shadow 0.2s;
+    border-color 0.2s;
 }
 
 .result-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--builder-accent-blue);
+  border-color: var(--builder-primary-purple);
 }
 
 .result-card h3 {
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-3);
-  border-bottom: 2px solid var(--builder-border-dark);
+  border-bottom: 1px solid var(--builder-border-subtle);
+  font-family: var(--builder-font-family);
+  font-weight: 600;
 }
 
 /* Company Overview */
@@ -249,7 +296,7 @@
 }
 
 .company-status {
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   margin: 0;
   opacity: 0.8;
 }
@@ -263,24 +310,26 @@
 .stat-item {
   text-align: center;
   padding: var(--space-4);
-  background: var(--builder-dark-bg);
+  background: var(--builder-black);
   border-radius: var(--border-radius-medium);
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
 }
 
 .stat-label {
   display: block;
   font-size: var(--font-size-sm);
-  color: var(--builder-text-light);
+  color: var(--builder-white);
   margin-bottom: var(--space-1);
   opacity: 0.7;
+  font-family: var(--builder-font-family);
 }
 
 .stat-value {
   display: block;
   font-weight: 600;
   font-size: 1.25rem;
-  color: var(--builder-accent-blue);
+  color: var(--builder-primary-purple);
+  font-family: var(--builder-font-family);
 }
 
 /* Tech Stack */
@@ -292,19 +341,20 @@
 }
 
 .tech-item {
-  background: var(--builder-dark-bg);
-  color: var(--builder-text-light);
+  background: var(--builder-black);
+  color: var(--builder-white);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--border-radius-medium);
   font-size: var(--font-size-sm);
   font-weight: 500;
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
+  font-family: var(--builder-font-family);
 }
 
 .tech-item.composable {
-  background: var(--builder-accent-blue);
-  color: var(--builder-dark-bg);
-  border-color: var(--builder-accent-blue);
+  background: var(--builder-primary-purple);
+  color: var(--builder-white);
+  border-color: var(--builder-primary-purple);
 }
 
 .composable-score {
@@ -312,15 +362,16 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-4);
-  background: var(--builder-dark-bg);
+  background: var(--builder-black);
   border-radius: var(--border-radius-medium);
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
 }
 
 .score-value {
   font-weight: 600;
   font-size: 1.25rem;
-  color: var(--builder-accent-blue);
+  color: var(--builder-primary-purple);
+  font-family: var(--builder-font-family);
 }
 
 /* Business Goals */
@@ -331,11 +382,12 @@
 .goals-list li {
   padding: var(--space-3);
   margin-bottom: var(--space-2);
-  background: var(--builder-dark-bg);
+  background: var(--builder-black);
   border-radius: var(--border-radius-medium);
-  border-left: 4px solid var(--builder-accent-blue);
-  border: 1px solid var(--builder-border-dark);
-  color: var(--builder-text-light);
+  border-left: 4px solid var(--builder-secondary-blue);
+  border: 1px solid var(--builder-border-subtle);
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
 }
 
 /* Recommendation Grid */
@@ -347,24 +399,20 @@
 }
 
 .recommendation-card {
-  background: var(--builder-dark-surface);
-  border-radius: var(--border-radius-large);
+  background: var(--builder-black);
+  border-radius: 16px;
   padding: var(--space-8);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
 }
 
 .product-display {
   text-align: center;
   padding: var(--space-8);
-  background: linear-gradient(
-    135deg,
-    var(--builder-dark-bg),
-    var(--builder-accent-blue)
-  );
+  background: var(--builder-gradient-purple);
   border-radius: var(--border-radius-large);
-  color: var(--color-white);
+  color: var(--builder-black);
   margin-bottom: var(--space-6);
+  font-family: var(--builder-font-family);
 }
 
 .product-name {
@@ -389,20 +437,20 @@
 .recommendation-reasons li {
   padding: var(--space-3);
   margin-bottom: var(--space-2);
-  background: var(--builder-dark-bg);
+  background: var(--builder-black);
   border-radius: var(--border-radius-medium);
-  border-left: 4px solid var(--builder-accent-blue);
-  border: 1px solid var(--builder-border-dark);
-  color: var(--builder-text-light);
+  border-left: 4px solid var(--builder-primary-purple);
+  border: 1px solid var(--builder-border-subtle);
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
 }
 
 /* Value Pyramid */
 .value-pyramid {
-  background: var(--builder-dark-surface);
-  border-radius: var(--border-radius-large);
+  background: var(--builder-black);
+  border-radius: 16px;
   padding: var(--space-8);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
 }
 
 .pyramid-structure {
@@ -418,27 +466,28 @@
 }
 
 .pyramid-level.strategic {
-  border-color: var(--builder-accent-blue);
-  background: rgba(0, 212, 255, 0.1);
-  color: var(--builder-text-light);
+  border-color: var(--builder-primary-purple);
+  background: rgba(172, 126, 244, 0.1);
+  color: var(--builder-white);
 }
 
 .pyramid-level.operational {
-  border-color: var(--builder-accent-purple);
-  background: rgba(139, 92, 246, 0.1);
-  color: var(--builder-text-light);
+  border-color: var(--builder-secondary-orange);
+  background: rgba(239, 108, 65, 0.1);
+  color: var(--builder-white);
 }
 
 .pyramid-level.tactical {
-  border-color: var(--builder-border-dark);
-  background: var(--builder-dark-bg);
-  color: var(--builder-text-light);
+  border-color: var(--builder-secondary-blue);
+  background: rgba(24, 182, 246, 0.1);
+  color: var(--builder-white);
 }
 
 .pyramid-level h4 {
   margin-bottom: var(--space-4);
   font-weight: 600;
-  color: var(--builder-text-light);
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
 }
 
 .value-list {
@@ -447,9 +496,10 @@
 
 .value-list li {
   padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--builder-border-dark);
-  color: var(--builder-text-light);
+  border-bottom: 1px solid var(--builder-border-subtle);
+  color: var(--builder-white);
   opacity: 0.9;
+  font-family: var(--builder-font-family);
 }
 
 .value-list li:last-child {
@@ -458,12 +508,17 @@
 
 /* Landing Page Generator */
 .landing-page-controls {
-  background: var(--builder-dark-surface);
-  border-radius: var(--border-radius-large);
+  background: var(--builder-black);
+  border-radius: 16px;
   padding: var(--space-8);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--builder-border-dark);
+  border: 1px solid var(--builder-border-subtle);
   margin-bottom: var(--space-8);
+}
+
+.landing-page-controls h3 {
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
+  margin-bottom: var(--space-6);
 }
 
 .settings-grid {
@@ -477,6 +532,8 @@
   display: block;
   font-weight: 600;
   margin-bottom: var(--space-2);
+  color: var(--builder-white);
+  font-family: var(--builder-font-family);
 }
 
 .color-picker {
