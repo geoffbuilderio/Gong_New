@@ -142,9 +142,24 @@ class SalesIntelligencePlatform {
     const inputValue =
       activeTab === "url" ? urlInput.value : companyInput.value;
 
-    if (!inputValue) {
+    if (!inputValue || inputValue.trim() === "") {
       alert("Please enter a valid URL or company name");
       return;
+    }
+
+    // Basic URL validation for URL tab
+    if (activeTab === "url") {
+      const urlPattern =
+        /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+      const simpleUrlPattern =
+        /^[\da-z\.-]+\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+
+      if (!urlPattern.test(inputValue) && !simpleUrlPattern.test(inputValue)) {
+        alert(
+          "Please enter a valid website URL (e.g., example.com or https://example.com)",
+        );
+        return;
+      }
     }
 
     // Show loading state
@@ -232,10 +247,27 @@ class SalesIntelligencePlatform {
       },
     };
 
-    const domain =
-      type === "url"
-        ? new URL(input).hostname.replace("www.", "")
-        : `${input.toLowerCase().replace(/\s+/g, "")}.com`;
+    let domain;
+    if (type === "url") {
+      try {
+        // Add protocol if missing
+        let urlToProcess = input;
+        if (!input.startsWith("http://") && !input.startsWith("https://")) {
+          urlToProcess = "https://" + input;
+        }
+        domain = new URL(urlToProcess).hostname.replace("www.", "");
+      } catch (error) {
+        console.warn("Invalid URL provided, using fallback:", input);
+        // Fallback: extract domain-like string from input
+        domain = input
+          .replace(/^https?:\/\/(www\.)?/, "")
+          .split("/")[0]
+          .split("?")[0];
+      }
+    } else {
+      domain = `${input.toLowerCase().replace(/\s+/g, "")}.com`;
+    }
+
     return (
       companies[domain] || {
         ...companies.default,
@@ -496,114 +528,114 @@ class SalesIntelligencePlatform {
     <title>Builder.io ${productName} - ${data.name}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif; 
-            line-height: 1.6; 
+        body {
+            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
             color: #1D2639;
         }
         .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-        .header { 
-            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); 
-            color: white; 
-            padding: 20px 0; 
+        .header {
+            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
+            color: white;
+            padding: 20px 0;
         }
-        .header-content { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .logo { 
-            height: 40px; 
-            background: white; 
-            padding: 8px 16px; 
-            border-radius: 8px; 
-            font-weight: 700; 
+        .logo {
+            height: 40px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
             color: ${primaryColor};
         }
         .nav { display: flex; gap: 32px; }
         .nav a { color: white; text-decoration: none; font-weight: 500; }
-        .hero { 
-            background: linear-gradient(180deg, ${primaryColor}10 0%, ${secondaryColor}10 100%); 
-            padding: 80px 0; 
-            text-align: center; 
+        .hero {
+            background: linear-gradient(180deg, ${primaryColor}10 0%, ${secondaryColor}10 100%);
+            padding: 80px 0;
+            text-align: center;
         }
-        .hero h1 { 
-            font-size: 3rem; 
-            font-weight: 700; 
-            margin-bottom: 24px; 
-            background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor}); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .hero p { 
-            font-size: 1.25rem; 
-            margin-bottom: 40px; 
-            max-width: 600px; 
-            margin-left: auto; 
-            margin-right: auto; 
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .cta-buttons { 
-            display: flex; 
-            gap: 16px; 
-            justify-content: center; 
-            margin-bottom: 40px; 
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 40px;
         }
-        .btn { 
-            padding: 16px 32px; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            text-decoration: none; 
-            transition: all 0.2s; 
+        .btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
         }
-        .btn-primary { 
-            background: ${primaryColor}; 
-            color: white; 
-            border: 2px solid ${primaryColor}; 
+        .btn-primary {
+            background: ${primaryColor};
+            color: white;
+            border: 2px solid ${primaryColor};
         }
-        .btn-secondary { 
-            background: transparent; 
-            color: ${primaryColor}; 
-            border: 2px solid ${primaryColor}; 
+        .btn-secondary {
+            background: transparent;
+            color: ${primaryColor};
+            border: 2px solid ${primaryColor};
         }
         .btn:hover { transform: translateY(-2px); }
-        .company-integration { 
-            background: white; 
-            padding: 32px; 
-            border-radius: 16px; 
-            margin: 40px auto; 
-            max-width: 600px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            border: 2px solid ${secondaryColor}; 
+        .company-integration {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin: 40px auto;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid ${secondaryColor};
         }
-        .company-logo { 
-            width: 60px; 
-            height: 60px; 
-            object-fit: contain; 
-            margin-bottom: 16px; 
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 16px;
         }
         .features { padding: 80px 0; background: #f8fafc; }
-        .features-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 32px; 
-            margin-top: 48px; 
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
         }
-        .feature-card { 
-            background: white; 
-            padding: 32px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1); 
-            border-top: 4px solid ${primaryColor}; 
+        .feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border-top: 4px solid ${primaryColor};
         }
-        .feature-card h3 { 
-            color: ${primaryColor}; 
-            margin-bottom: 16px; 
+        .feature-card h3 {
+            color: ${primaryColor};
+            margin-bottom: 16px;
         }
-        .footer { 
-            background: ${primaryColor}; 
-            color: white; 
-            padding: 40px 0; 
-            text-align: center; 
+        .footer {
+            background: ${primaryColor};
+            color: white;
+            padding: 40px 0;
+            text-align: center;
         }
         @media (max-width: 768px) {
             .hero h1 { font-size: 2rem; }
@@ -631,7 +663,7 @@ class SalesIntelligencePlatform {
         <div class="container">
             <h1>Builder.io ${productName} for ${data.name}</h1>
             <p>${productTagline} - Designed specifically for companies like ${data.name}</p>
-            
+
             <div class="cta-buttons">
                 <a href="#" class="btn btn-primary">Start Free Trial</a>
                 <a href="#" class="btn btn-secondary">Book Demo</a>
@@ -649,7 +681,7 @@ class SalesIntelligencePlatform {
         <div class="container">
             <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 16px;">Why ${data.name} Needs Builder.io ${productName}</h2>
             <p style="text-align: center; font-size: 1.25rem; color: #4A5468;">Tailored benefits based on your company's profile and goals</p>
-            
+
             <div class="features-grid">
                 ${data.recommendation.valueProposition.tactical
                   .map(
