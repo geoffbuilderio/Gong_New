@@ -229,8 +229,43 @@ class SalesIntelligencePlatform {
           "Support for emerging payment methods",
         ],
       },
+      "google.com": {
+        name: "Google",
+        logo: "https://logo.clearbit.com/google.com",
+        status: "Public Company",
+        employees: "150,000+",
+        revenue: "$280B",
+        traffic: "92B monthly visits",
+        techStack: ["Angular", "TypeScript", "Go", "Python", "Kubernetes"],
+        composableScore: 95,
+        goals: [
+          "AI-first product development",
+          "Cloud infrastructure expansion",
+          "Privacy-focused innovation",
+          "Sustainable technology solutions",
+        ],
+      },
+      "microsoft.com": {
+        name: "Microsoft",
+        logo: "https://logo.clearbit.com/microsoft.com",
+        status: "Public Company",
+        employees: "220,000+",
+        revenue: "$211B",
+        traffic: "1.7B monthly visits",
+        techStack: ["Azure", "TypeScript", "C#", ".NET", "React"],
+        composableScore: 90,
+        goals: [
+          "Cloud-first strategy",
+          "AI and machine learning integration",
+          "Developer productivity tools",
+          "Enterprise digital transformation",
+        ],
+      },
       default: {
-        name: input.replace(/^https?:\/\/(www\.)?/, "").split(".")[0],
+        name:
+          type === "company"
+            ? input
+            : input.replace(/^https?:\/\/(www\.)?/, "").split(".")[0],
         logo: "https://via.placeholder.com/60x60?text=LOGO",
         status: "Private Company",
         employees: "500-1,000",
@@ -268,19 +303,38 @@ class SalesIntelligencePlatform {
       domain = `${input.toLowerCase().replace(/\s+/g, "")}.com`;
     }
 
-    return (
-      companies[domain] || {
-        ...companies.default,
-        name: type === "company" ? input : companies.default.name,
-      }
-    );
+    const companyData = companies[domain] || {
+      ...companies.default,
+      name: type === "company" ? input : companies.default.name,
+    };
+
+    // If no specific logo URL is provided, try to generate one from the domain
+    if (
+      companyData.logo === "https://via.placeholder.com/60x60?text=LOGO" &&
+      type === "url"
+    ) {
+      companyData.logo = this.generateLogoUrl(domain);
+    }
+
+    return companyData;
   }
 
   populateResearchResults() {
     const data = this.prospectData;
 
-    // Company overview
-    document.getElementById("company-logo").src = data.logo;
+    // Company overview with logo error handling
+    const logoImg = document.getElementById("company-logo");
+    logoImg.src = data.logo;
+    logoImg.onerror = () => {
+      // Fallback to Google favicon service if Clearbit fails
+      logoImg.src = `https://www.google.com/s2/favicons?domain=${this.extractDomainFromData(data)}&sz=64`;
+
+      // If that also fails, use a generated avatar
+      logoImg.onerror = () => {
+        logoImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&size=60&background=00d4ff&color=fff&bold=true`;
+      };
+    };
+
     document.getElementById("company-name-display").textContent = data.name;
     document.getElementById("company-status").textContent = data.status;
     document.getElementById("employee-count").textContent = data.employees;
@@ -775,6 +829,34 @@ class SalesIntelligencePlatform {
     setTimeout(() => {
       copyBtn.textContent = originalText;
     }, 2000);
+  }
+
+  // Logo Generation Method
+  generateLogoUrl(domain) {
+    // Try multiple logo sources
+    const logoSources = [
+      `https://logo.clearbit.com/${domain}`,
+      `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
+      `https://${domain}/favicon.ico`,
+    ];
+
+    // Return the first available logo source (Clearbit API is most reliable)
+    return logoSources[0];
+  }
+
+  // Extract domain from prospect data for fallback logo purposes
+  extractDomainFromData(data) {
+    // Try to determine domain from company name
+    const companyName = data.name.toLowerCase();
+    if (companyName.includes("shopify")) return "shopify.com";
+    if (companyName.includes("stripe")) return "stripe.com";
+    if (companyName.includes("google")) return "google.com";
+    if (companyName.includes("microsoft")) return "microsoft.com";
+    if (companyName.includes("amazon")) return "amazon.com";
+    if (companyName.includes("apple")) return "apple.com";
+
+    // Fallback: generate domain from company name
+    return `${companyName.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "")}.com`;
   }
 
   // Utility Methods
