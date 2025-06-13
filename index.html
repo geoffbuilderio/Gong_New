@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gong.io - Reality Design System Example</title>
+    <title>Builder.io Sales Intelligence Platform</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,96 +13,332 @@
     />
 
     <link rel="stylesheet" href="css/reality.css" />
+    <link rel="stylesheet" href="css/sales-app.css" />
   </head>
   <body>
-    <header class="main-header">
+    <header class="sales-header">
       <div class="container d-flex justify-content-between align-items-center">
-        <img src="assets/gong-logo.svg" alt="Gong.io Logo" class="logo" />
-        <nav class="main-nav">
-          <a href="#">Product</a>
-          <a href="#">Solutions</a>
-          <a href="#">Pricing</a>
-          <a href="sales-app.html" class="sales-app-link">Sales App</a>
+        <div class="d-flex align-items-center">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F125fc712bbf4414ead437762827f2370"
+            alt="Builder.io"
+            class="logo"
+          />
+          <span class="sales-app-title">Sales Intelligence Platform</span>
+        </div>
+        <nav class="header-nav">
+          <a href="#" class="nav-link">Product</a>
+          <a href="#" class="nav-link">Solutions</a>
+          <a href="#" class="nav-link">Pricing</a>
         </nav>
-        <button class="btn btn-primary">Request a Demo</button>
       </div>
     </header>
 
-    <main>
-      <section class="hero text-center py-10">
-        <div class="container">
-          <h1 class="mb-4">Unlock Reality. Drive Revenue.</h1>
-          <p class="h3 text-body mb-8">
-            The Gong Reality Platform™ captures and understands every customer
-            interaction, then delivers insights at scale, empowering revenue
-            teams to make decisions based on data instead of opinions.
-          </p>
-          <div class="d-flex justify-content-center">
-            <button class="btn btn-primary btn-lg">Get a Demo</button>
-            <button class="btn btn-secondary btn-lg ml-4">Watch a Tour</button>
+    <main class="sales-main">
+      <div class="container">
+        <!-- Step 1: Prospect Input -->
+        <section id="prospect-input" class="sales-section active">
+          <div class="section-header">
+            <h1>Prospect Research & Analysis</h1>
+            <p class="section-description">
+              Enter a prospect URL or company name to generate personalized
+              Builder.io demos
+            </p>
           </div>
-        </div>
-      </section>
 
-      <section class="features bg-light-gray py-10">
-        <div class="container">
-          <h2 class="text-center mb-8">
-            Everything you need to win your market
-          </h2>
-          <div class="grid-3-col">
-            <div class="card">
-              <h3 class="mb-2">Deal Intelligence</h3>
-              <p class="text-body mb-4">
-                Get a clear view of your pipeline, identify deal risks, and
-                improve your forecasting accuracy.
-              </p>
-              <a href="#" class="link-primary">Learn more &rarr;</a>
+          <div class="input-card">
+            <div class="input-tabs">
+              <button class="tab-btn active" data-tab="url">Website URL</button>
+              <button class="tab-btn" data-tab="company">Company Name</button>
             </div>
-            <div class="card">
-              <h3 class="mb-2">People Intelligence</h3>
-              <p class="text-body mb-4">
-                Coach your team to success with insights from your top
-                performers' calls and meetings.
-              </p>
-              <a href="#" class="link-primary">Learn more &rarr;</a>
-            </div>
-            <div class="card">
-              <h3 class="mb-2">Market Intelligence</h3>
-              <p class="text-body mb-4">
-                Understand what your customers are saying and how your market is
-                evolving, in real-time.
-              </p>
-              <a href="#" class="link-primary">Learn more &rarr;</a>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section class="cta py-10">
-        <div class="container text-center">
-          <h2>Ready to see Gong in action?</h2>
-          <p class="text-body mb-6">
-            Let us show you how the Reality Platform can transform your revenue
-            team.
-          </p>
-          <div class="form-group inline-form">
-            <input
-              type="email"
-              class="form-control"
-              placeholder="Enter your business email"
-            />
-            <button class="btn btn-primary">Request a Demo</button>
+            <div class="tab-content active" id="url-tab">
+              <div class="form-group">
+                <label for="prospect-url">Prospect Website URL</label>
+                <input
+                  type="url"
+                  id="prospect-url"
+                  class="form-control"
+                  placeholder="https://www.example.com"
+                  required
+                />
+                <small class="form-help"
+                  >Enter the prospect's primary website URL</small
+                >
+              </div>
+            </div>
+
+            <div class="tab-content" id="company-tab">
+              <div class="form-group">
+                <label for="company-name">Company Name</label>
+                <input
+                  type="text"
+                  id="company-name"
+                  class="form-control"
+                  placeholder="Acme Corporation"
+                  required
+                />
+                <small class="form-help"
+                  >Enter the exact company name for research</small
+                >
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button id="analyze-btn" class="btn btn-primary btn-lg">
+                <span class="btn-text">Analyze Prospect</span>
+                <span class="btn-loading">Analyzing...</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2: Research Results -->
+        <section id="research-results" class="sales-section">
+          <div class="section-header">
+            <h2>Prospect Intelligence Report</h2>
+            <p class="section-description">
+              Automated research and technology analysis
+            </p>
+          </div>
+
+          <div class="results-grid">
+            <div class="result-card company-overview">
+              <h3>Company Overview</h3>
+              <div class="overview-details">
+                <div class="company-info">
+                  <img
+                    id="company-logo"
+                    src=""
+                    alt="Company Logo"
+                    class="company-logo"
+                  />
+                  <div>
+                    <h4 id="company-name-display">Company Name</h4>
+                    <p id="company-status" class="company-status">Status</p>
+                  </div>
+                </div>
+                <div class="company-stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Employees</span>
+                    <span id="employee-count" class="stat-value">-</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Revenue</span>
+                    <span id="revenue-estimate" class="stat-value">-</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Traffic</span>
+                    <span id="traffic-estimate" class="stat-value">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-card tech-stack">
+              <h3>Technology Stack</h3>
+              <div id="tech-stack-list" class="tech-list">
+                <!-- Tech items will be populated here -->
+              </div>
+              <div class="composable-score">
+                <span class="score-label">Composable Architecture Score:</span>
+                <span id="composable-score" class="score-value">-</span>
+              </div>
+            </div>
+
+            <div class="result-card business-goals">
+              <h3>Business Goals & Objectives</h3>
+              <ul id="business-goals-list" class="goals-list">
+                <!-- Goals will be populated here -->
+              </ul>
+            </div>
+          </div>
+
+          <div class="section-actions">
+            <button id="generate-recommendation" class="btn btn-primary btn-lg">
+              Generate Product Recommendation
+            </button>
+          </div>
+        </section>
+
+        <!-- Step 3: Product Recommendation -->
+        <section id="product-recommendation" class="sales-section">
+          <div class="section-header">
+            <h2>Product Recommendation & Value Assessment</h2>
+            <p class="section-description">
+              AI-powered analysis and product matching
+            </p>
+          </div>
+
+          <div class="recommendation-grid">
+            <div class="recommendation-card">
+              <div class="product-recommendation">
+                <h3>Recommended Product</h3>
+                <div id="recommended-product" class="product-display">
+                  <!-- Product recommendation will be populated here -->
+                </div>
+              </div>
+
+              <div class="recommendation-reasons">
+                <h4>Why This Product?</h4>
+                <ul id="recommendation-reasons-list">
+                  <!-- Reasons will be populated here -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="value-pyramid">
+              <h3>Value Pyramid</h3>
+              <div class="pyramid-structure">
+                <div class="pyramid-level strategic">
+                  <h4>Strategic Value</h4>
+                  <ul id="strategic-value" class="value-list">
+                    <!-- Strategic values will be populated here -->
+                  </ul>
+                </div>
+                <div class="pyramid-level operational">
+                  <h4>Operational Benefits</h4>
+                  <ul id="operational-value" class="value-list">
+                    <!-- Operational values will be populated here -->
+                  </ul>
+                </div>
+                <div class="pyramid-level tactical">
+                  <h4>Tactical Advantages</h4>
+                  <ul id="tactical-value" class="value-list">
+                    <!-- Tactical values will be populated here -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-actions">
+            <button id="generate-landing-page" class="btn btn-primary btn-lg">
+              Create Personalized Demo Page
+            </button>
+          </div>
+        </section>
+
+        <!-- Step 4: Personalized Landing Page -->
+        <section id="landing-page-generator" class="sales-section">
+          <div class="section-header">
+            <h2>Personalized Demo Page</h2>
+            <p class="section-description">
+              Customized Builder.io landing page with prospect branding
+            </p>
+          </div>
+
+          <div class="landing-page-controls">
+            <div class="page-settings">
+              <h3>Page Customization</h3>
+              <div class="settings-grid">
+                <div class="setting-group">
+                  <label>Primary Color</label>
+                  <input
+                    type="color"
+                    id="primary-color"
+                    class="color-picker"
+                    value="#6339F5"
+                  />
+                </div>
+                <div class="setting-group">
+                  <label>Secondary Color</label>
+                  <input
+                    type="color"
+                    id="secondary-color"
+                    class="color-picker"
+                    value="#00D0AB"
+                  />
+                </div>
+                <div class="setting-group">
+                  <label>Template Base</label>
+                  <select id="template-base" class="form-control">
+                    <option value="fusion">Builder.io Fusion</option>
+                    <option value="publish">Builder.io Publish</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-actions">
+              <button id="preview-page" class="btn btn-secondary">
+                Preview Page
+              </button>
+              <button id="download-page" class="btn btn-primary">
+                Download HTML
+              </button>
+              <button id="share-page" class="btn btn-primary">
+                Get Shareable Link
+              </button>
+            </div>
+          </div>
+
+          <div class="landing-page-preview">
+            <div class="preview-header">
+              <h3>Live Preview</h3>
+              <div class="preview-controls">
+                <button class="device-btn active" data-device="desktop">
+                  Desktop
+                </button>
+                <button class="device-btn" data-device="tablet">Tablet</button>
+                <button class="device-btn" data-device="mobile">Mobile</button>
+              </div>
+            </div>
+            <div class="preview-frame">
+              <iframe
+                id="page-preview"
+                src="about:blank"
+                class="preview-iframe"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+          <div class="progress-step active" data-step="1">
+            <span class="step-number">1</span>
+            <span class="step-label">Input</span>
+          </div>
+          <div class="progress-step" data-step="2">
+            <span class="step-number">2</span>
+            <span class="step-label">Research</span>
+          </div>
+          <div class="progress-step" data-step="3">
+            <span class="step-number">3</span>
+            <span class="step-label">Recommendation</span>
+          </div>
+          <div class="progress-step" data-step="4">
+            <span class="step-number">4</span>
+            <span class="step-label">Demo Page</span>
           </div>
         </div>
-      </section>
+      </div>
     </main>
 
-    <footer class="main-footer bg-dark py-8">
-      <div class="container text-center">
-        <p class="text-light-gray">
-          &copy; 2025 Gong.io, Inc. All rights reserved.
-        </p>
+    <!-- Modal for sharing -->
+    <div id="share-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Share Demo Page</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Your personalized demo page has been generated!</p>
+          <div class="share-link-group">
+            <input type="text" id="share-link" class="form-control" readonly />
+            <button id="copy-link" class="btn btn-primary">Copy Link</button>
+          </div>
+          <div class="share-stats">
+            <p><strong>Page Views:</strong> <span id="page-views">0</span></p>
+            <p>
+              <strong>Generated:</strong> <span id="generation-date">-</span>
+            </p>
+          </div>
+        </div>
       </div>
-    </footer>
+    </div>
+
+    <script src="js/sales-app.js"></script>
   </body>
 </html>
