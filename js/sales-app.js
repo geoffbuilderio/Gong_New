@@ -873,6 +873,27 @@ class SalesIntelligencePlatform {
             margin-bottom: 24px;
             letter-spacing: 2px;
         }
+        .company-partnership {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .partner-logo, .builder-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        .builder-logo {
+            filter: brightness(0) invert(1);
+        }
+        .partnership-connector {
+            font-size: 24px;
+            font-weight: 700;
+            color: ${brandPrimary};
+        }
         .hero h1 {
             font-size: 56px;
             font-weight: 700;
@@ -1058,12 +1079,6 @@ class SalesIntelligencePlatform {
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo">Builder.io</a>
-                <nav class="nav">
-                    <a href="#">Platform</a>
-                    <a href="#">Solutions</a>
-                    <a href="#">Resources</a>
-                    <a href="#">Pricing</a>
-                </nav>
             </div>
         </div>
     </header>
@@ -1071,7 +1086,12 @@ class SalesIntelligencePlatform {
     <section class="hero">
         <div class="container">
             <div class="hero-badge">${isPublish ? "BUILDER PUBLISH" : "BUILDER FUSION"}</div>
-            <h1>${data.name} + ${productName}</h1>
+            <div class="company-partnership">
+                <img src="${data.logo}" alt="${data.name}" class="partner-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0icmdiKDE3MiwgMTI2LCAyNDQpIi8+Cjx0ZXh0IHg9IjMwIiB5PSIzNiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+JHtkYXRhLm5hbWUuY2hhckF0KDApfTwvdGV4dD4KPC9zdmc+Cg=='; this.onerror=null;">
+                <div class="partnership-connector">+</div>
+                <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F125fc712bbf4414ead437762827f2370" alt="Builder.io" class="builder-logo">
+            </div>
+            <h1>${data.name} + Builder.io</h1>
             <p>${productTagline} tailored for ${data.name}'s ${data.employees} team and ${data.traffic} monthly visitors</p>
 
             <div class="cta-buttons">
@@ -1127,18 +1147,24 @@ class SalesIntelligencePlatform {
         <div class="container">
             <div class="why-grid">
                 <div class="why-content">
-                    <h3>Why ${productName} for ${data.name}?</h3>
+                    <h3>Why ${data.name} Is Ready for ${productName}</h3>
                     <ul class="why-list">
-                        ${recommendation.reasons.map((reason) => `<li>${reason}</li>`).join("")}
+                        <li>Current tech stack analysis shows ${data.composableScore}/100 readiness score</li>
+                        <li>With ${data.employees} team members, you need scalable content management</li>
+                        <li>Your ${data.traffic} monthly visitors demand enterprise-grade performance</li>
+                        <li>HubSpot data shows ${recommendation.hubspotInsights.dealProbability}% likelihood of successful implementation</li>
+                        <li>Recent activity: ${recommendation.hubspotInsights.pastInteractions[0] || "Strong engagement with headless CMS content"}</li>
                     </ul>
                 </div>
                 <div class="why-content">
-                    <h3>Immediate Benefits</h3>
+                    <h3>Based on Your Business Goals</h3>
                     <ul class="why-list">
-                        ${recommendation.valueProposition.operational
-                          .slice(0, 4)
-                          .map((benefit) => `<li>${benefit}</li>`)
+                        ${data.goals
+                          .slice(0, 3)
+                          .map((goal) => `<li>Aligns with: ${goal}</li>`)
                           .join("")}
+                        <li>Sales intelligence: Currently in ${recommendation.hubspotInsights.salesStage} stage</li>
+                        <li>Recommended next action: ${recommendation.hubspotInsights.nextActions[0]}</li>
                     </ul>
                 </div>
             </div>
