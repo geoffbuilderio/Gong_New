@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Builder.io Demo</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+      }
+      .error {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+        text-align: center;
+        padding: 20px;
+      }
+      .error h1 {
+        margin-bottom: 16px;
+        color: rgb(172, 126, 244);
+      }
+      .demo-frame {
+        width: 100%;
+        height: 100vh;
+        border: none;
+      }
+      .demo-analytics {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading" class="loading">
+      <div>Loading personalized demo...</div>
+    </div>
+
+    <div id="error" class="error" style="display: none">
+      <h1>Demo Not Found</h1>
+      <p>This demo link may have expired or doesn't exist.</p>
+      <a href="index.html" style="color: rgb(172, 126, 244); margin-top: 20px"
+        >Create a new demo</a
+      >
+    </div>
+
+    <div id="demo-analytics" class="demo-analytics" style="display: none">
+      Views: <span id="view-count">1</span>
+    </div>
+
+    <script>
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
+      function loadDemo() {
+        const demoId = getUrlParameter("id");
+
+        if (!demoId) {
+          showError();
+          return;
+        }
+
+        try {
+          const demoDataStr = localStorage.getItem(`demo_${demoId}`);
+
+          if (!demoDataStr) {
+            showError();
+            return;
+          }
+
+          const demoData = JSON.parse(demoDataStr);
+
+          // Increment view count
+          demoData.views = (demoData.views || 0) + 1;
+          localStorage.setItem(`demo_${demoId}`, JSON.stringify(demoData));
+
+          // Update page title
+          document.title = `${demoData.prospectName} - Builder.io ${demoData.product === "fusion" ? "Fusion" : "Publish"} Demo`;
+
+          // Hide loading
+          document.getElementById("loading").style.display = "none";
+
+          // Show analytics
+          document.getElementById("view-count").textContent = demoData.views;
+          document.getElementById("demo-analytics").style.display = "block";
+
+          // Inject the demo HTML
+          document.body.insertAdjacentHTML("beforeend", demoData.html);
+        } catch (error) {
+          console.error("Error loading demo:", error);
+          showError();
+        }
+      }
+
+      function showError() {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("error").style.display = "flex";
+      }
+
+      // Load demo when page loads
+      document.addEventListener("DOMContentLoaded", loadDemo);
+    </script>
+  </body>
+</html>

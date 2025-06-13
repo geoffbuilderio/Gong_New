@@ -760,26 +760,61 @@ class SalesIntelligencePlatform {
     const template = document.getElementById("template-base").value;
     const data = this.prospectData;
 
-    const previewHtml = this.generatePreviewHTML(
-      data,
-      primaryColor,
-      secondaryColor,
-      template,
-    );
+    if (!data || !data.recommendation) {
+      console.warn("No prospect data available for preview");
+      return;
+    }
 
-    const iframe = document.getElementById("page-preview");
-    const doc = iframe.contentDocument || iframe.contentWindow.document;
-    doc.open();
-    doc.write(previewHtml);
-    doc.close();
+    try {
+      const previewHtml = this.generatePreviewHTML(
+        data,
+        primaryColor,
+        secondaryColor,
+        template,
+      );
+
+      const iframe = document.getElementById("page-preview");
+
+      // Ensure iframe is ready
+      iframe.onload = () => {
+        console.log("Preview updated successfully");
+      };
+
+      // Create a blob URL for the HTML content
+      const blob = new Blob([previewHtml], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      iframe.src = url;
+
+      // Clean up the blob URL after a delay
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error("Error updating preview:", error);
+      const iframe = document.getElementById("page-preview");
+      iframe.src =
+        'data:text/html;charset=utf-8,<html><body style="font-family: Poppins, sans-serif; padding: 40px; text-align: center; background: rgb(0,0,0); color: rgb(255,255,255);"><h2>Preview Error</h2><p>Unable to generate preview. Please ensure you have completed the recommendation step.</p></body></html>';
+    }
   }
 
   generatePreviewHTML(data, primaryColor, secondaryColor, template) {
-    const productName = template === "fusion" ? "Fusion" : "Publish";
-    const productTagline =
-      template === "fusion"
-        ? "The Future of Visual Development"
-        : "Headless CMS for Modern Websites";
+    const recommendation = data.recommendation;
+    if (!recommendation) {
+      console.error("No recommendation data available");
+      return "<html><body><h1>Error: No recommendation data</h1></body></html>";
+    }
+
+    const productName = recommendation.name;
+    const productTagline = recommendation.tagline;
+    const isPublish = recommendation.product === "publish";
+
+    // Use Builder.io colors if custom colors aren't provided
+    const brandPrimary =
+      primaryColor === "#6339F5" ? "rgb(172, 126, 244)" : primaryColor;
+    const brandSecondary =
+      secondaryColor === "#00D0AB"
+        ? isPublish
+          ? "rgb(239, 108, 65)"
+          : "rgb(24, 182, 246)"
+        : secondaryColor;
 
     return `
 <!DOCTYPE html>
@@ -787,19 +822,22 @@ class SalesIntelligencePlatform {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Builder.io ${productName} - ${data.name}</title>
+    <title>${productName} Demo - Personalized for ${data.name}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
-            color: #1D2639;
+            background: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
         }
-        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+
         .header {
-            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
-            color: white;
+            background: rgb(0, 0, 0);
             padding: 20px 0;
+            border-bottom: 1px solid rgb(58, 58, 58);
         }
         .header-content {
             display: flex;
@@ -808,39 +846,53 @@ class SalesIntelligencePlatform {
         }
         .logo {
             height: 40px;
-            background: white;
+            background: rgb(255, 255, 255);
             padding: 8px 16px;
             border-radius: 8px;
             font-weight: 700;
-            color: ${primaryColor};
+            color: rgb(0, 0, 0);
+            text-decoration: none;
         }
         .nav { display: flex; gap: 32px; }
-        .nav a { color: white; text-decoration: none; font-weight: 500; }
+        .nav a { color: rgb(255, 255, 255); text-decoration: none; font-weight: 500; opacity: 0.8; }
+        .nav a:hover { opacity: 1; }
+
         .hero {
-            background: linear-gradient(180deg, ${primaryColor}10 0%, ${secondaryColor}10 100%);
-            padding: 80px 0;
+            padding: 120px 0;
             text-align: center;
         }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(172, 126, 244, 0.1);
+            border: 1px solid ${brandPrimary};
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: ${brandPrimary};
+            margin-bottom: 24px;
+            letter-spacing: 2px;
+        }
         .hero h1 {
-            font-size: 3rem;
+            font-size: 56px;
             font-weight: 700;
             margin-bottom: 24px;
-            background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            letter-spacing: -1px;
         }
         .hero p {
-            font-size: 1.25rem;
+            font-size: 19px;
             margin-bottom: 40px;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            opacity: 0.9;
         }
         .cta-buttons {
             display: flex;
             gap: 16px;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
         .btn {
             padding: 16px 32px;
@@ -848,62 +900,156 @@ class SalesIntelligencePlatform {
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s;
+            font-size: 16px;
         }
         .btn-primary {
-            background: ${primaryColor};
-            color: white;
-            border: 2px solid ${primaryColor};
+            background: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+            border: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.3);
         }
         .btn-secondary {
             background: transparent;
-            color: ${primaryColor};
-            border: 2px solid ${primaryColor};
+            color: rgb(255, 255, 255);
+            border: 2px solid rgb(255, 255, 255);
         }
-        .btn:hover { transform: translateY(-2px); }
-        .company-integration {
-            background: white;
-            padding: 32px;
+        .btn-secondary:hover {
+            background: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+        }
+
+        .company-showcase {
+            background: rgb(0, 0, 0);
+            padding: 60px 40px;
+            margin: 60px auto;
+            max-width: 800px;
             border-radius: 16px;
-            margin: 40px auto;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 2px solid ${secondaryColor};
-        }
-        .company-logo {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            margin-bottom: 16px;
-        }
-        .features { padding: 80px 0; background: #f8fafc; }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            margin-top: 48px;
-        }
-        .feature-card {
-            background: white;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            border-top: 4px solid ${primaryColor};
-        }
-        .feature-card h3 {
-            color: ${primaryColor};
-            margin-bottom: 16px;
-        }
-        .footer {
-            background: ${primaryColor};
-            color: white;
-            padding: 40px 0;
+            border: 1px solid rgb(58, 58, 58);
             text-align: center;
         }
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 24px;
+            border-radius: 12px;
+        }
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: ${brandPrimary};
+            display: block;
+        }
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .value-section {
+            padding: 120px 0;
+            background: rgb(0, 0, 0);
+        }
+        .section-badge {
+            display: inline-block;
+            background: rgba(${isPublish ? "239, 108, 65" : "24, 182, 246"}, 0.1);
+            border: 1px solid ${brandSecondary};
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: ${brandSecondary};
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+        .value-card {
+            background: rgb(0, 0, 0);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgb(58, 58, 58);
+            transition: all 0.3s ease;
+        }
+        .value-card:hover {
+            border-color: ${brandPrimary};
+            transform: translateY(-4px);
+        }
+        .value-card h3 {
+            color: ${brandPrimary};
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .value-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .why-section {
+            padding: 120px 0;
+            background: rgb(0, 0, 0);
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+            margin-top: 60px;
+            align-items: center;
+        }
+        .why-content h3 {
+            font-size: 32px;
+            margin-bottom: 24px;
+            color: rgb(255, 255, 255);
+        }
+        .why-list {
+            list-style: none;
+        }
+        .why-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgb(58, 58, 58);
+            opacity: 0.9;
+        }
+        .why-list li:before {
+            content: "✓";
+            color: ${brandSecondary};
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .footer {
+            background: rgb(0, 0, 0);
+            border-top: 1px solid rgb(58, 58, 58);
+            padding: 60px 0;
+            text-align: center;
+        }
+        .footer p {
+            opacity: 0.7;
+        }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .features-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 36px; }
+            .value-grid, .why-grid { grid-template-columns: 1fr; }
             .cta-buttons { flex-direction: column; align-items: center; }
             .header-content { flex-direction: column; gap: 16px; }
+            .company-stats { grid-template-columns: 1fr; }
+            .container { padding: 0 20px; }
         }
     </style>
 </head>
@@ -911,10 +1057,11 @@ class SalesIntelligencePlatform {
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">Builder.io</div>
+                <a href="#" class="logo">Builder.io</a>
                 <nav class="nav">
-                    <a href="#">Product</a>
+                    <a href="#">Platform</a>
                     <a href="#">Solutions</a>
+                    <a href="#">Resources</a>
                     <a href="#">Pricing</a>
                 </nav>
             </div>
@@ -923,34 +1070,51 @@ class SalesIntelligencePlatform {
 
     <section class="hero">
         <div class="container">
-            <h1>Builder.io ${productName} for ${data.name}</h1>
-            <p>${productTagline} - Designed specifically for companies like ${data.name}</p>
+            <div class="hero-badge">${isPublish ? "BUILDER PUBLISH" : "BUILDER FUSION"}</div>
+            <h1>${data.name} + ${productName}</h1>
+            <p>${productTagline} tailored for ${data.name}'s ${data.employees} team and ${data.traffic} monthly visitors</p>
 
             <div class="cta-buttons">
-                <a href="#" class="btn btn-primary">Start Free Trial</a>
-                <a href="#" class="btn btn-secondary">Book Demo</a>
+                <a href="#" class="btn btn-primary">Book Your Demo</a>
+                <a href="#" class="btn btn-secondary">View Case Studies</a>
             </div>
 
-            <div class="company-integration">
-                <img src="${data.logo}" alt="${data.name} Logo" class="company-logo">
-                <h3>Perfect for ${data.name}</h3>
-                <p>With ${data.employees} employees and ${data.traffic}, ${data.name} needs a solution that scales. Builder.io ${productName} provides the perfect balance of power and simplicity.</p>
+            <div class="company-showcase">
+                <img src="${data.logo}" alt="${data.name} Logo" class="company-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9InJnYigxNzIsIDEyNiwgMjQ0KSIvPgo8dGV4dCB4PSI0MCIgeT0iNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPiR7ZGF0YS5uYW1lLmNoYXJBdCgwKX08L3RleHQ+Cjwvc3ZnPgo='; this.onerror=null;">
+                <h3>Built specifically for ${data.name}</h3>
+                <p>Based on your current tech stack and business goals, ${productName} is the perfect fit for your ${data.composableScore >= 70 ? "modern" : "evolving"} architecture.</p>
+
+                <div class="company-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">${data.employees}</span>
+                        <div class="stat-label">Team Size</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${data.traffic}</span>
+                        <div class="stat-label">Monthly Traffic</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${data.composableScore}/100</span>
+                        <div class="stat-label">Readiness Score</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="features">
+    <section class="value-section">
         <div class="container">
-            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 16px;">Why ${data.name} Needs Builder.io ${productName}</h2>
-            <p style="text-align: center; font-size: 1.25rem; color: #4A5468;">Tailored benefits based on your company's profile and goals</p>
+            <div class="section-badge">${isPublish ? "HEADLESS CMS" : "VISUAL EDITOR"}</div>
+            <h2 style="text-align: center; font-size: 48px; margin-bottom: 16px; font-weight: 700;">Strategic Value for ${data.name}</h2>
+            <p style="text-align: center; font-size: 19px; opacity: 0.8; max-width: 600px; margin: 0 auto;">Based on your research data and business objectives</p>
 
-            <div class="features-grid">
-                ${data.recommendation.valueProposition.tactical
+            <div class="value-grid">
+                ${recommendation.valueProposition.strategic
                   .map(
-                    (benefit) => `
-                    <div class="feature-card">
-                        <h3>${benefit.split(" ").slice(0, 2).join(" ")}</h3>
-                        <p>${benefit}</p>
+                    (value, index) => `
+                    <div class="value-card">
+                        <h3>Strategic Impact ${index + 1}</h3>
+                        <p>${value}</p>
                     </div>
                 `,
                   )
@@ -959,9 +1123,31 @@ class SalesIntelligencePlatform {
         </div>
     </section>
 
+    <section class="why-section">
+        <div class="container">
+            <div class="why-grid">
+                <div class="why-content">
+                    <h3>Why ${productName} for ${data.name}?</h3>
+                    <ul class="why-list">
+                        ${recommendation.reasons.map((reason) => `<li>${reason}</li>`).join("")}
+                    </ul>
+                </div>
+                <div class="why-content">
+                    <h3>Immediate Benefits</h3>
+                    <ul class="why-list">
+                        ${recommendation.valueProposition.operational
+                          .slice(0, 4)
+                          .map((benefit) => `<li>${benefit}</li>`)
+                          .join("")}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Builder.io. Personalized demo for ${data.name}.</p>
+            <p>&copy; 2025 Builder.io. Personalized ${productName} demo for ${data.name} — Generated by ABX Intelligence</p>
         </div>
     </footer>
 </body>
@@ -988,28 +1174,77 @@ class SalesIntelligencePlatform {
   }
 
   downloadPage() {
+    if (!this.prospectData || !this.prospectData.recommendation) {
+      alert("Please complete the recommendation step before downloading");
+      return;
+    }
+
     const primaryColor = document.getElementById("primary-color").value;
     const secondaryColor = document.getElementById("secondary-color").value;
     const template = document.getElementById("template-base").value;
 
-    const html = this.generatePreviewHTML(
+    try {
+      const html = this.generatePreviewHTML(
+        this.prospectData,
+        primaryColor,
+        secondaryColor,
+        template,
+      );
+
+      const blob = new Blob([html], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${this.prospectData.name.replace(/[^a-zA-Z0-9]/g, "-")}-${this.prospectData.recommendation.product}-demo.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // Show success message
+      setTimeout(() => {
+        alert("Demo page downloaded successfully!");
+      }, 100);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("Failed to download demo page. Please try again.");
+    }
+  }
+
+  sharePage() {
+    // Generate the actual HTML content
+    const primaryColor = document.getElementById("primary-color").value;
+    const secondaryColor = document.getElementById("secondary-color").value;
+    const template = document.getElementById("template-base").value;
+
+    const htmlContent = this.generatePreviewHTML(
       this.prospectData,
       primaryColor,
       secondaryColor,
       template,
     );
 
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${this.prospectData.name}-builder-demo.html`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+    // Create a unique demo ID
+    const demoId = `${this.prospectData.name.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
 
-  sharePage() {
-    const shareLink = `https://demos.builder.io/${this.prospectData.name.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
+    // Store the demo data in localStorage (in production, this would be saved to a database)
+    const demoData = {
+      id: demoId,
+      html: htmlContent,
+      prospectName: this.prospectData.name,
+      product: this.prospectData.recommendation.product,
+      createdAt: new Date().toISOString(),
+      views: 0,
+    };
+
+    localStorage.setItem(`demo_${demoId}`, JSON.stringify(demoData));
+
+    // Create the shareable URL (in production, this would be your actual domain)
+    const baseUrl =
+      window.location.origin +
+      window.location.pathname.replace("index.html", "");
+    const shareLink = `${baseUrl}demo.html?id=${demoId}`;
+
     document.getElementById("share-link").value = shareLink;
     document.getElementById("page-views").textContent = "0";
     document.getElementById("generation-date").textContent =
